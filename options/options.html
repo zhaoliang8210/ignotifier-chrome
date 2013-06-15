@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <title>Gmail Notifier Options</title>
+    <link REL="stylesheet" TYPE="text/css" HREF="options.css">
+    <script type="text/javascript" src="options.js"></script>
+  </head>
+  <body>
+
+  <div class="container">
+    <div class="title">
+      <span>Gmail Notifier</span>
+    </div>
+
+    <table border="0" width="100%">
+      <tr>
+        <td class="td1">
+          Check for new emails every (seconds):
+          <br/>
+          <span class="description">Minimum time period is 10 seconds.</span>
+        </td>
+        <td valign="baseline"><input type="number" id="period" min="10" style="width: 100%"/></td>
+      </tr>
+      <tr>
+        <td>
+          Gmail feeds:
+          <br/>
+          <span class="description">Separate feeds by "," (Comma). [Restart required]</span>
+        </td>
+        <td valign="baseline"><input type="text" id="feeds" style="width: 100%"/></td>
+      </tr>
+      <tr>
+        <td>
+          Display desktop notification for new emails:
+          <br/>
+          <span class="description"></span>
+        </td>
+        <td valign="baseline"><input type="checkbox" id="notification"/></td>
+      </tr>
+      <tr>
+        <td>
+          Play alert sound for new emails:
+          <br/>
+          <span class="description"></span>
+        </td>
+        <td valign="baseline"><input type="checkbox" id="alert"/></td>
+      </tr>
+      <tr>
+        <td>
+          Sort account selections alphabetically:
+          <br/>
+          <span class="description">The default order type is logged-in order</span>
+        </td>
+        <td valign="baseline"><input type="checkbox" id="alphabetic"/></td>
+      </tr>
+      <!--
+      <tr>
+        <td>
+          Sound notification:
+          <br/>
+          <span class="description"></span>
+        </td>
+        <td valign="baseline">
+          <select id="soundNotification">
+            <option value="1">Gmail notifier alert</option>
+            <option value="2">User defined sound (wav)</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          User defined notification sound (*.wav):
+          <br/>
+          <span class="description">The default order type is logged-in order</span>
+        </td>
+        <td valign="baseline"><input type="file" id="sound"/></td>
+      </tr>
+      -->
+      <tr>
+        <td>
+          Reset all settings back:
+          <br/>
+          <span class="description">The default order type is logged-in order</span>
+        </td>
+        <td valign="baseline"><button type="button" id="reset">Reset!</button></td>
+      </tr>
+    </table>
+  </div>
+  
+  
+    
+  </body>
+</html>

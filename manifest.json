@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+
+  "name": "Gmail Notifier",
+  "description": "Multiple account (or label) Gmail notifier (without storing passwords).",
+  "version": "0.1",
+
+  "default_locale": "en",
+  
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "https://mail.google.com/",
+    "storage",
+    "tabs",
+    "notifications"
+  ],
+  
+  "web_accessible_resources": [
+    "notification.png"
+  ],
+  
+  "browser_action": {
+    "default_icon": "blue.png"
+  },
+  
+  "options_page": "options/options.html"
+}

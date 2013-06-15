@@ -1,0 +1,18 @@
+{
+  "gmail": {"message": "Gmail notifier"},
+  "tooltip1": {"message": "Left click: Open Gmail or mail preview panel"},
+  "tooltip2": {"message": "Middle (or Ctrl+Left) click: Refreshes all accounts"},
+  "tooltip3": {"message": "Right click: Account selections"},
+  "error": {"message": "Error"},
+  "warning": {"message": "Warning"},
+  "msg1": {"message": "Please log-in to your Gmail account"},
+  "msg2": {"message": "Cannot connect to Gmail server"},
+  "msg3": {"message": "Unread counts"},
+  "msg4": {"message": "Select an account"},
+  "msg5": {"message": "New email(s) in the following accounts:"},
+  "msg6": {"message": "List of all logged-in accounts:"},
+  "msg7": {"message": "This action will reset your current settings including 'feed list' back to the factory defaults! Are you sure?"},
+  "msg8": {"message": "Umm, it is already open!"},
+  "msg9": {"message": "No user defined sound file found!"},
+  "context": {"message": "No logged-in account detected"}
+}

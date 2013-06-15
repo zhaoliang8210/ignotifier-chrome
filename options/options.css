@@ -1,0 +1,30 @@
+body {
+  font-family: "Segoe UI", Tahoma, Helvetica, "Sans-Serif";
+  overflow: hidden;
+  font-size: 15px;
+  background-color: white;
+  margin: 0;
+}
+
+.td1 {
+  width: 10%;
+  white-space: nowrap;
+}
+.description {
+  padding-left: 10px;
+  color: gray;
+}
+.container {
+  width: 800px;
+  margin: 0 auto;
+}
+.title {
+  font-size: 140%;
+  background-image: url(../notification.png);
+  background-repeat: no-repeat;
+  padding-left: 50px;
+  margin-bottom: 10px;
+}
+.title span {
+  line-height: 52px;
+}

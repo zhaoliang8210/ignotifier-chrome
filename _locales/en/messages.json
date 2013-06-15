@@ -1,8 +1,6 @@
 {
   "gmail": {"message": "Gmail notifier"},
-  "tooltip1": {"message": "Left click: Open Gmail or mail preview panel"},
-  "tooltip2": {"message": "Middle (or Ctrl+Left) click: Refreshes all accounts"},
-  "tooltip3": {"message": "Right click: Account selections"},
+  "tooltip": {"message": "Left click: Open Gmail or mail preview panel"},
   "error": {"message": "Error"},
   "warning": {"message": "Warning"},
   "msg1": {"message": "Please log-in to your Gmail account"},

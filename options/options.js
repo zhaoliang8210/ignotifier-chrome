@@ -20,7 +20,7 @@ function load () {
   $("notification").checked = localStorage['notification'] == "true" ? true : false;
   $("alert").checked = localStorage['alert'] == "true" ? true : false;
   $("alphabetic").checked = localStorage['alphabetic'] == "true" ? true : false;
-  //$("soundNotification").value = localStorage['soundNotification'];
+  $("soundNotification").value = localStorage['soundNotification'];
 }
 
 
@@ -55,17 +55,24 @@ window.addEventListener("load", function () {
   $("alphabetic").addEventListener("change", function () {
     localStorage['alphabetic'] = $("alphabetic").checked;
   }, false);
-  /*
   $("soundNotification").addEventListener("change", function () {
-    localStorage['soundNotification'] = $("soundNotification").value;
+    var value = $("soundNotification").value;
+    localStorage['soundNotification'] = value;
+    chrome.extension.getBackgroundPage().play.reset();
   }, false);
   $("sound").addEventListener("change", function () {
-    console.log($("sound").value);
-    localStorage['sound'] = $("sound").value;
+    var file = $("sound").files[0];
+    var reader = new FileReader()
+    reader.onload = function(e) {
+      localStorage['soundMime'] = file.type;
+      localStorage['sound'] = e.target.result;
+      chrome.extension.getBackgroundPage().play.reset();
+    }
+    reader.readAsDataURL(file);
   }, false);
-  */
   $("reset").addEventListener("click", function () {
     chrome.extension.getBackgroundPage().setPreferences();
+    chrome.extension.getBackgroundPage().play.reset();
     load();
   }, false);
 

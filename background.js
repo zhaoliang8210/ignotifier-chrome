@@ -1,4 +1,3 @@
-var version = "0.1";
 var tm, unreadObjs = [], loggedins  = [];
 
 /** Preferences **/
@@ -56,8 +55,7 @@ var config = {
   firstTime: 1,
   desktopNotification: 3,
   //Toolbar
-  defaultTooltip: _("gmail") + "\n\n" + 
-    _("tooltip1") + "\n" + _("tooltip2") + "\n" + _("tooltip3")
+  defaultTooltip: _("gmail") + "\n\n" + _("tooltip")
 };
 
 /** URL parser **/
@@ -163,7 +161,7 @@ var icon = (function () {
   var canvas = document.createElement('canvas');
   var context = canvas.getContext('2d');
   var base_image = new Image();
-  base_image.src = 'icon.png';
+  base_image.src = 'toolbar.png';
   base_image.onload = function() {
     context.drawImage(base_image, 0, 0);
   }
@@ -574,7 +572,7 @@ var checkAllMails = (function () {
     }
     
     if (prefs.alert && (showAlert) && text) {
-      play();
+      play.now();
     }
     //Tooltiptext
     chrome.browserAction.setTitle({
@@ -694,23 +692,36 @@ var notify = function (title, text) {
 
 /** Player **/
 var play = (function () {
-  var audioElement = document.createElement('audio');
-  audioElement.setAttribute("preload", "auto");
-  audioElement.autobuffer = true;
-  
-  var source = document.createElement('source');
-  source.type= 'audio/wav';
-  source.src= 'alert.wav';
-  audioElement.appendChild(source);
-  
-  return function () {
-    audioElement.load;
-    audioElement.play();
+  var audioElement
+  function reset () {
+    audioElement = document.createElement('audio');
+    audioElement.setAttribute("preload", "auto");
+    audioElement.autobuffer = true;
+    var source = document.createElement('source');
+    var data = localStorage['sound'];
+    if (localStorage['soundNotification'] == "2" && data) {
+      source.type = localStorage['soundMime'] ? localStorage['soundMime'] : 'audio/wav';
+      source.src = data;
+    }
+    else {
+      source.type = 'audio/wav';
+      source.src = 'alert.wav';
+    } 
+    audioElement.appendChild(source);
+  }
+  reset();
+
+  return {
+    now: function () {
+      audioElement.load;
+      audioElement.play();
+    },
+    reset: reset
   }
 })();
 
 /** Initialize **/
-console.log(localStorage['version']);
+var version = chrome.runtime.getManifest().version;
 if (localStorage['version'] != version) {
   localStorage['version'] = version;
   chrome.tabs.create({

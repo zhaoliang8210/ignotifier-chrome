@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Gmail Notifier Options</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link REL="stylesheet" TYPE="text/css" HREF="options.css">
     <script type="text/javascript" src="options.js"></script>
   </head>
@@ -52,7 +53,6 @@
         </td>
         <td valign="baseline"><input type="checkbox" id="alphabetic"/></td>
       </tr>
-      <!--
       <tr>
         <td>
           Sound notification:
@@ -62,19 +62,18 @@
         <td valign="baseline">
           <select id="soundNotification">
             <option value="1">Gmail notifier alert</option>
-            <option value="2">User defined sound (wav)</option>
+            <option value="2">User defined sound (*.wav or *.mp3)</option>
           </select>
         </td>
       </tr>
       <tr>
         <td>
-          User defined notification sound (*.wav):
+          User defined notification sound :
           <br/>
-          <span class="description">The default order type is logged-in order</span>
+          <span class="description">Valid audio formats are *.wav and *.mp3</span>
         </td>
-        <td valign="baseline"><input type="file" id="sound"/></td>
+        <td valign="baseline"><input type="file" id="sound" accept="audio/wav, audio/mpeg"/></td>
       </tr>
-      -->
       <tr>
         <td>
           Reset all settings back:

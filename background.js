@@ -1,3 +1,4 @@
+var version = "0.1";
 var tm, unreadObjs = [], loggedins  = [];
 
 /** Preferences **/
@@ -9,12 +10,12 @@ function setPreferences () {
   localStorage['alert'] = "true";
   localStorage['soundNotification'] = "1";
 }
-(function () {
-  if (localStorage['firstRun'] == "unknown" || localStorage['firstRun'] == "true") {
-    localStorage['firstRun'] = false;
-    setPreferences();
-  }
-})();
+
+if (!localStorage['firstRun'] || localStorage['firstRun'] == "true") {
+  localStorage['firstRun'] = false;
+  setPreferences();
+}
+
 /** Compatibility set **/
 var prefs = {
   get feeds () {return localStorage['feeds']},
@@ -56,9 +57,7 @@ var config = {
   desktopNotification: 3,
   //Toolbar
   defaultTooltip: _("gmail") + "\n\n" + 
-    _("tooltip1") + "\n" + _("tooltip2") + "\n" + _("tooltip3"),
-  //Homepage:
-  homepage: "http://add0n.com/gmail-notifier.html"
+    _("tooltip1") + "\n" + _("tooltip2") + "\n" + _("tooltip3")
 };
 
 /** URL parser **/
@@ -711,6 +710,15 @@ var play = (function () {
 })();
 
 /** Initialize **/
+console.log(localStorage['version']);
+if (localStorage['version'] != version) {
+  localStorage['version'] = version;
+  chrome.tabs.create({
+    url: "http://add0n.com/gmail-notifier-chrome.html", 
+    active: true
+  });
+}
+
 icon(null, "load");
 tm = manager (config.firstTime * 1000, checkAllMails);
 chrome.browserAction.setTitle({

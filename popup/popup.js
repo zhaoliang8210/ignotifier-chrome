@@ -189,6 +189,9 @@ window.addEventListener("load", function () {
     var link = unreadObjs[iIndex].entries[jIndex].link;
     chrome.extension.sendMessage(null, {cmd: "rd", link: link}, response);
   });
+  new Listen("inbox", "click", function(e) {
+    chrome.extension.getBackgroundPage().open(unreadObjs[iIndex].link);
+  }); 
   new Listen("refresh", "click", function(e) {
     chrome.extension.getBackgroundPage().tm.reset(true);
   });

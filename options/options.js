@@ -16,8 +16,8 @@ var period;
 
 function load () {
   $("period").value = localStorage['period'];
-  $("resetPeriod").value = localStorage['resetPeriod'] || "0";
-  $("initialPeriod").value = localStorage['initialPeriod'] || "1";
+  $("resetPeriod").value = localStorage['resetPeriod'];
+  $("initialPeriod").value = localStorage['initialPeriod'];
   $("feeds").value = localStorage['feeds'];
   $("notification").checked = localStorage['notification'] == "true" ? true : false;
   $("alert").checked = localStorage['alert'] == "true" ? true : false;

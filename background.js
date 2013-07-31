@@ -153,7 +153,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   }
 });
 /** Popup lisstener **/
-chrome.runtime.onMessage.addListener(function(request, sender, callback) {
+chrome[chrome.runtime && chrome.runtime.onMessage ? "runtime" : "extension"].onMessage.addListener(function(request, sender, callback) {
   switch (request.cmd) {
     case "rc_%5Ei":
     case "tr":
@@ -801,7 +801,7 @@ var play = (function () {
 })();
 
 /** Initialize **/
-var version = chrome.runtime.getManifest().version;
+var version = chrome[chrome.runtime && chrome.runtime.getManifest ? "runtime" : "extension"].getManifest().version;
 if (localStorage['version'] != version) {
   localStorage['version'] = version;
   chrome.tabs.create({

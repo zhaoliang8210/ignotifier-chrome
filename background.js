@@ -3,26 +3,37 @@ var tm, resetTm, unreadObjs = [], loggedins  = [];
 /** Compatibility set **/
 var prefs = {
   get feeds () {
-    return localStorage['feeds'] || 
-      "https://mail.google.com/mail/u/0/feed/atom, https://mail.google.com/mail/u/1/feed/atom, https://mail.google.com/mail/u/2/feed/atom, https://mail.google.com/mail/u/3/feed/atom";
+    if (!localStorage['feeds']) {
+      localStorage['feeds'] = "https://mail.google.com/mail/u/0/feed/atom, https://mail.google.com/mail/u/1/feed/atom, https://mail.google.com/mail/u/2/feed/atom, https://mail.google.com/mail/u/3/feed/atom";
+    }
+    return localStorage['feeds'];  
   },
   set feeds (val) {localStorage['feeds'] = val},
   get period () {
-    var tmp = parseInt(localStorage['period'] || "15");
+    if (!localStorage['period']) {
+      localStorage['period'] = "15";
+    }
+    var tmp = parseInt(localStorage['period']);
     return (tmp > 10 ? tmp : 10) * 1000;
   },
   set period (val) {
     localStorage['period'] = val
   },
   get resetPeriod () {
-    var tmp = parseInt(localStorage['resetPeriod'] || "0");
+    if (!localStorage['resetPeriod']) {
+      localStorage['resetPeriod'] = "0";
+    }
+    var tmp = parseInt(localStorage['resetPeriod']);
     if (!tmp) {
       return 0;
     }
     return (tmp > 1 ? tmp : 1) * 1000 * 60;
   },
   get firstTime () {
-    var tmp = parseInt(localStorage['initialPeriod'] || "1");
+    if (!localStorage['initialPeriod']) {
+      localStorage['initialPeriod'] = "1";
+    }
+    var tmp = parseInt(localStorage['initialPeriod']);
     return (tmp > 1 ? tmp : 1) * 1000;
   },
   get alphabetic () {
@@ -30,19 +41,31 @@ var prefs = {
   },
   set alphabetic (val) {localStorage['alphabetic'] = val},
   get notification () {
-    return (localStorage['notification'] || "true") == "true" ? true : false
+    if (!localStorage['notification']) {
+      localStorage['notification'] = "true";
+    }
+    return localStorage['notification'] == "true" ? true : false
   },
   set notification (val) {localStorage['notification'] = val},
   get desktopNotification () {
-    var tmp = parseInt(localStorage['desktopNotification'] || "3");
+    if (!localStorage['desktopNotification']) {
+      localStorage['desktopNotification'] = "3";
+    }
+    var tmp = parseInt(localStorage['desktopNotification']);
     return (tmp > 3 ? tmp : 3) * 1000;
   },  
   get alert () {
+    if (!localStorage['alert']) {
+      localStorage['alert'] = "true";
+    }
     return localStorage['alert'] == "true" ? true : false
   },
   set alert (val) {localStorage['alert'] = val},
   get soundNotification () {
-    return localStorage['soundNotification'] || "1";
+    if (!localStorage['soundNotification']) {
+      localStorage['soundNotification'] = "1";
+    }
+    return localStorage['soundNotification'];
   }
 }
 var _ = chrome.i18n.getMessage;

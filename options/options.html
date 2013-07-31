@@ -9,7 +9,7 @@
 
   <div class="container">
     <div class="title">
-      <span>Gmail Notifier</span>
+      <span>Gmail Notifier Options</span>
     </div>
 
     <table border="0" width="100%">
@@ -20,6 +20,24 @@
           <span class="description">Minimum time period is 10 seconds.</span>
         </td>
         <td valign="baseline"><input type="number" id="period" min="10" style="width: 100%"/></td>
+      </tr>
+      <tr>
+        <td class="td1">
+          Remind for all unread emails every (minutes):
+          <br/>
+          <span class="description">Set the value to zero for no periodic reminders. Minimum reset period is 5 minutes.
+          <br/>
+          [Important note] Non-zero value fires both desktop notification and alert sound eternally if you have unread email(s) exactly similar to new email arrival.</span>
+        </td>
+        <td valign="baseline"><input type="number" id="resetPeriod" style="width: 100%"/></td>
+      </tr>
+      <tr>
+        <td class="td1">
+          Do not check for new emails on startup for (seconds):
+          <br/>
+          <span class="description"></span>
+        </td>
+        <td valign="baseline"><input type="number" id="initialPeriod" min="1" style="width: 100%"/></td>
       </tr>
       <tr>
         <td>
@@ -84,8 +102,5 @@
       </tr>
     </table>
   </div>
-  
-  
-    
   </body>
 </html>

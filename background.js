@@ -1,4 +1,4 @@
-var tm, unreadObjs = [], loggedins  = [];
+var tm, resetTm, unreadObjs = [], loggedins  = [];
 
 /** Compatibility set **/
 var prefs = {
@@ -8,10 +8,22 @@ var prefs = {
   },
   set feeds (val) {localStorage['feeds'] = val},
   get period () {
-    return parseInt(localStorage['period'] || "15");
+    var tmp = parseInt(localStorage['period'] || "15");
+    return (tmp > 10 ? tmp : 10) * 1000;
   },
   set period (val) {
     localStorage['period'] = val
+  },
+  get resetPeriod () {
+    var tmp = parseInt(localStorage['resetPeriod'] || "0");
+    if (!tmp) {
+      return 0;
+    }
+    return (tmp > 1 ? tmp : 1) * 1000 * 60;
+  },
+  get firstTime () {
+    var tmp = parseInt(localStorage['initialPeriod'] || "1");
+    return (tmp > 1 ? tmp : 1) * 1000;
   },
   get alphabetic () {
     return localStorage['alphabetic'] == "true" ? true : false
@@ -20,7 +32,11 @@ var prefs = {
   get notification () {
     return (localStorage['notification'] || "true") == "true" ? true : false
   },
-  set notification (val) {localStorage['notification'] = val},  
+  set notification (val) {localStorage['notification'] = val},
+  get desktopNotification () {
+    var tmp = parseInt(localStorage['desktopNotification'] || "3");
+    return (tmp > 3 ? tmp : 3) * 1000;
+  },  
   get alert () {
     return localStorage['alert'] == "true" ? true : false
   },
@@ -51,10 +67,6 @@ var config = {
     },
     maxCount: 20
   },
-  //Timing
-  get period () {return (prefs.period > 10 ? prefs.period : 10)},
-  firstTime: 1,
-  desktopNotification: 3,
   //Toolbar
   defaultTooltip: _("gmail") + "\n\n" + _("tooltip")
 };
@@ -231,25 +243,63 @@ var icon = (function () {
 })();
 
 /** Interval manager **/
-var manager = function (once, func) {
-  var _timer, fisrt = true;
-  function run (t1, param) {
+var manager = function (once, period, func) {
+  var _timer, first = true;
+  function run (once, period, param) {
     _timer = timer.setTimeout(function () {
-      func(fisrt ? param : null);
-      fisrt = false;
-      run(t1);
-    }, fisrt ? t1 : config.period * 1000);
+      func(first ? param : null);
+      first = false;
+      run(once, period);
+    }, first ? prefs[once] : prefs[period]); 
   }
-  run(once);
+  run(once, period);
   
   return {
     reset: function (forced) {
       timer.clearTimeout(_timer);
-      fisrt = true;
-      run(0, forced);
+      first = true;
+      run(0, period, forced);
+    },
+    stop: function () {
+      timer.clearTimeout(_timer);
+      first = true; 
     }
   }
 };
+
+/** Reset timer to remind user for unread emails **/
+var reset = function () {
+
+    var dd = new Date();
+    var hh = dd.getHours();
+    var mm = dd.getMinutes();
+    var ss = dd.getSeconds();
+    console.log("The time is now: " + hh + ":" + mm + ":" + ss);
+
+
+  tm.reset(true);
+}
+
+/** on prefs.reset **/
+onResetPeriod = (function () {
+  var _timer;
+  return function () {
+    if (_timer) timer.clearTimeout(_timer);
+    _timer = timer.setTimeout(function () {
+      if (prefs.resetPeriod) {
+        if (resetTm) {
+          resetTm.reset();
+        }
+        else {
+          resetTm = new manager ("resetPeriod", "resetPeriod", reset);
+        }
+      }
+      else {
+        resetTm.stop();
+      }
+    }, 10000);  // No notification during the setting change
+  }
+})();
 
 /** Server **/
 var server = {
@@ -694,7 +744,7 @@ var notify = function (title, text) {
   notification.show();
   timer.setTimeout(function () {
     notification.cancel();
-  }, config.desktopNotification * 1000);
+  }, prefs.desktopNotification);
 }
 
 /** Player **/
@@ -737,8 +787,10 @@ if (localStorage['version'] != version) {
   });
 }
 
-icon(null, "load");
-tm = manager (config.firstTime * 1000, checkAllMails);
+tm = new manager ("firstTime", "period", checkAllMails);
+if (prefs.resetPeriod) {
+  resetTm = new manager ("resetPeriod", "resetPeriod", reset);
+} 
 chrome.browserAction.setTitle({
   title: config.defaultTooltip
 });

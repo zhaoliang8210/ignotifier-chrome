@@ -5,12 +5,23 @@ body {
   background-color: white;
   margin: 0;
 }
-
+button {
+  border-style: none;
+  width: 100px;
+  height: 25px;
+  background-color: #606C88;
+  color: white;
+  border-radius: 3px;
+}
+button:hover {
+  background-color: #4B546A;
+}
 .td1 {
-  width: 10%;
-  white-space: nowrap;
+  width: 400px;
 }
 .description {
+  font-size: 90%;
+  display: block;
   padding-left: 10px;
   color: gray;
 }

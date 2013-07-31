@@ -16,6 +16,8 @@ var period;
 
 function load () {
   $("period").value = localStorage['period'];
+  $("resetPeriod").value = localStorage['resetPeriod'] || "0";
+  $("initialPeriod").value = localStorage['initialPeriod'] || "1";
   $("feeds").value = localStorage['feeds'];
   $("notification").checked = localStorage['notification'] == "true" ? true : false;
   $("alert").checked = localStorage['alert'] == "true" ? true : false;
@@ -23,25 +25,34 @@ function load () {
   $("soundNotification").value = localStorage['soundNotification'];
 }
 
-
 window.addEventListener("load", function () {
   load ();
   
-  var period = function (e) {
+  var period = function (id, min, e, checkFor) {
     e.preventDefault();
-    var value = $("period").value;
-    console.log(value);
-    
-    if (!IsNumeric (value) || parseInt(value) < 10) {
-      $("period").value = 10;
-      localStorage['period'] = 10;
+    var value = $(id).value;
+
+    if (!IsNumeric (value) || parseInt(value) < min) {
+      $(id).value = min;
+      localStorage[id] = min;
     }
     else {
-      localStorage['period'] = parseInt(value);
+      localStorage[id] = parseInt(value);
     }
   }
-  $("period").addEventListener("keyup", period, false);
-  $("period").addEventListener("change", period, false);
+  $("period").addEventListener("keyup", function (e) {period("period", 10, e)}, false);
+  $("period").addEventListener("change", function (e) {period("period", 10, e)}, false);
+  $("initialPeriod").addEventListener("keyup", function (e) {period("initialPeriod", 1, e)}, false);
+  $("initialPeriod").addEventListener("change", function (e) {period("initialPeriod", 1, e)}, false);
+  $("resetPeriod").addEventListener("keyup", function (e) {
+    period("resetPeriod", 0, e);
+    chrome.extension.getBackgroundPage().onResetPeriod();
+  }, false);
+  $("resetPeriod").addEventListener("change", function (e) {
+    period("resetPeriod", 0, e);
+    chrome.extension.getBackgroundPage().onResetPeriod();
+  }, false);
+  
   $("feeds").addEventListener("keyup", function () {
     localStorage['feeds'] = $("feeds").value;
   }, false);
@@ -71,7 +82,15 @@ window.addEventListener("load", function () {
     reader.readAsDataURL(file);
   }, false);
   $("reset").addEventListener("click", function () {
-    chrome.extension.getBackgroundPage().setPreferences();
+    localStorage['alphabetic']         = false;
+    localStorage['alert']            = true;
+    localStorage['notification']       = true;
+    localStorage['period']             = 15;
+    localStorage['soundNotification']  = 1;
+    localStorage['resetPeriod']        = 0;
+    localStorage['initialPeriod']      = 1;
+    localStorage['feeds']              = "https://mail.google.com/mail/u/0/feed/atom, https://mail.google.com/mail/u/1/feed/atom, https://mail.google.com/mail/u/2/feed/atom, https://mail.google.com/mail/u/3/feed/atom";
+
     chrome.extension.getBackgroundPage().play.reset();
     load();
   }, false);

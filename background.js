@@ -1,32 +1,33 @@
 var tm, unreadObjs = [], loggedins  = [];
 
-/** Preferences **/
-function setPreferences () {
-  localStorage['period'] = "15";
-  localStorage['feeds'] = "https://mail.google.com/mail/u/0/feed/atom, https://mail.google.com/mail/u/1/feed/atom, https://mail.google.com/mail/u/2/feed/atom, https://mail.google.com/mail/u/3/feed/atom";
-  localStorage['notification'] = "true";
-  localStorage['alphabetic'] = "false";
-  localStorage['alert'] = "true";
-  localStorage['soundNotification'] = "1";
-}
-
-if (!localStorage['firstRun'] || localStorage['firstRun'] == "true") {
-  localStorage['firstRun'] = false;
-  setPreferences();
-}
-
 /** Compatibility set **/
 var prefs = {
-  get feeds () {return localStorage['feeds']},
+  get feeds () {
+    return localStorage['feeds'] || 
+      "https://mail.google.com/mail/u/0/feed/atom, https://mail.google.com/mail/u/1/feed/atom, https://mail.google.com/mail/u/2/feed/atom, https://mail.google.com/mail/u/3/feed/atom";
+  },
   set feeds (val) {localStorage['feeds'] = val},
-  get period () {return parseInt(localStorage['period'])},
-  set period (val) {localStorage['period'] = val},
-  get alphabetic () {return localStorage['alphabetic'] == "true" ? true : false},
+  get period () {
+    return parseInt(localStorage['period'] || "15");
+  },
+  set period (val) {
+    localStorage['period'] = val
+  },
+  get alphabetic () {
+    return localStorage['alphabetic'] == "true" ? true : false
+  },
   set alphabetic (val) {localStorage['alphabetic'] = val},
-  get notification () {return localStorage['notification'] == "true" ? true : false},
+  get notification () {
+    return (localStorage['notification'] || "true") == "true" ? true : false
+  },
   set notification (val) {localStorage['notification'] = val},  
-  get alert () {return localStorage['alert'] == "true" ? true : false},
-  set alert (val) {localStorage['alert'] = val}
+  get alert () {
+    return localStorage['alert'] == "true" ? true : false
+  },
+  set alert (val) {localStorage['alert'] = val},
+  get soundNotification () {
+    return localStorage['soundNotification'] || "1";
+  }
 }
 var _ = chrome.i18n.getMessage;
 var timer = window;
@@ -705,7 +706,7 @@ var play = (function () {
     audioElement.autobuffer = true;
     var source = document.createElement('source');
     var data = localStorage['sound'];
-    if (localStorage['soundNotification'] == "2" && data) {
+    if (prefs.soundNotification == "2" && data) {
       source.type = localStorage['soundMime'] ? localStorage['soundMime'] : 'audio/wav';
       source.src = data;
     }
